@@ -4,7 +4,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import create_engine
-from error import error
+from helpers import error, check_login
 
 # initiate flask app
 app = Flask(__name__)
@@ -48,7 +48,6 @@ def register():
 
 @app.route("/")
 def home():
-    if session.get("user_id") is None:
-            return redirect("/login")
-
-    
+    if session.get("user_id") == None:
+        return redirect("/login")
+    return render_template("error.html")
