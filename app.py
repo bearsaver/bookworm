@@ -4,7 +4,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import create_engine
-from helpers import error, check_login
+from helpers import error
 
 # initiate flask app
 app = Flask(__name__)
@@ -37,17 +37,24 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     elif request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        # validate user input
+        if not username or not password:
+            return error("required fields not filled")
+
         return render_template("index.html")
     else:
-        return render_template("error.html", link=error(""))
+        return error("")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     print(error(""))
-    return render_template("error.html", link=error(""))
+    return error("")
 
 @app.route("/")
 def home():
     if session.get("user_id") == None:
         return redirect("/login")
-    return render_template("error.html")
+    return error("")

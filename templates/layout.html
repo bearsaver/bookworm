@@ -37,5 +37,12 @@
                 </div>
             </nav> 
         </div>
+        <main class="container-fluid">
+            {% block content %}{% endblock %}
+        </main>
+        <footer class="mb-5 small text-center text-muted">
+            Book data provided by <a href="https://books.google.com/">Google Books</a>
+        </footer>
+        
     </body>
 </html>
