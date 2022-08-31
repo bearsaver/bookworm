@@ -4,7 +4,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import create_engine
-import error
+from error import error
 
 # initiate flask app
 app = Flask(__name__)
@@ -35,15 +35,16 @@ engine = create_engine("sqlite:///bookworm.db")
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template("layout.html")
-    elif request.method == "POST":
         return render_template("login.html")
+    elif request.method == "POST":
+        return render_template("index.html")
     else:
         return render_template("error.html", link=error(""))
 
 @app.route("/register", methods=["GET", "POST"])
-def register:
-    #TODO
+def register():
+    print(error(""))
+    return render_template("error.html", link=error(""))
 
 @app.route("/")
 def home():
