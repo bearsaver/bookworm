@@ -6,8 +6,12 @@
     border-radius: 10px%;
 }
 
-img {
+.error {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.center {
+    text-align: center;
 }
