@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import error
+from helpers import error, lookup
 import cs50
 
 # initiate flask app
@@ -100,3 +100,14 @@ def home():
     if session.get("user_id") == None:
         return redirect("/login")
     return render_template("index.html")
+
+
+@app.route("/search")
+def search():
+    
+    # intitle: Returns results where the text following this keyword is found in the title.
+    # inauthor: Returns results where the text following this keyword is found in the author.
+    # isbn: Returns results where the text following this keyword is the ISBN number.
+    # inpublisher: Returns results where the text following this keyword is found in the publisher.
+
+    return error("TODO")
