@@ -6,27 +6,40 @@
 
 {% block content %}
 <form action="/search" method="POST">
-    <input name="search" placeholder="query" type="text">
-    <select name="type">
-        <option disabled selected>type</option>
-        {% for item in list %}
-        <option value={{ item }}>{{ item }}</option>
-        {% endfor %} 
-    </select>
-    <button class="btn btn-primary" type="submit">Search</button>
+        <div class="m-3 text-center">
+            <input autocomplete="off" name="search" class="align-middle form mx-2 search" placeholder="ISBN" required type="number">
+            <button class="btn btn-primary mx-2" type="submit">Search</button>
+        </div>
 </form>
 
 {% if request.method == "POST"%}
-<table>
-    {% for book in response %}
-        <tr>
-            <th><img alt={{ book["title"] }} src={{ book["img_link_small"] }}></th>
-            <th>{{ book["title"] }}</th>
-            <th>{{ book["authors"] }}</th>
-            <th>{{ book["publisher"] }}</th>
-            <th><button><a href="/details?q={{ book["title"] }}+intitle">more details</a></button></th>
-        </tr>
-    {% endfor %}
+<table class="table table-borderless">
+            <tr>
+                <th class="first_col">cover</th>
+                <th>title</th>
+                <th>author</th>
+                <th>publisher</th>
+                <th></th>
+            </tr>
+    {% if response != None %}
+        {% for book in response %}
+            <tr>
+                <td class="first_col"><img alt={{ book["title"] }} class="search_img" src={{ book["img_small"] }}></td>
+                <td>{{ book["title"] }}</td>
+                <td>{{ book["authors"] }}</td>
+                <td>{{ book["publisher"] }}</td>
+                <td>
+                    <form action="/details">
+                        <input name="isbn" type="hidden" value={{ book["isbn"] }}>
+                        <button class ="btn btn-primary" type="submit">more details</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    {% else %}
+            <p>No results found.</p>
+    {% endif %}
+
 </table>
 {% endif %}
 

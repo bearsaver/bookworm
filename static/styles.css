@@ -15,3 +15,17 @@
 .center {
     text-align: center;
 }
+
+.search_img {
+    display: block;
+    width: 50%;
+    height: auto;
+}
+
+td {
+    vertical-align: middle;
+}
+
+.search {
+    width: 50%
+}

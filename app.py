@@ -110,7 +110,31 @@ def search():
     # isbn: Returns results where the text following this keyword is the ISBN number.
     # inpublisher: Returns results where the text following this keyword is found in the publisher.
 
-    search_types = ["title", "author", "isbn"]
-    
+    # make sure user is logged in
+    if session.get("user_id") == None:
+        return redirect("/login")
 
-    return render_template("search.html", types=search_types)
+    # if no search has been typed in, return default search page
+    if request.method == "GET":    
+        return render_template("search.html")
+
+    # if something is submitted, search to API and return result
+    elif request.method == "POST":
+        search = request.form.get("search")
+        
+        # validate user input
+        if search == None:
+            return error("required fields not filled")
+        if ((float(search) % 1) != 0) or float(search) < 0:
+            return error("invalid search")
+
+        # make API call
+        response = lookup(search)
+        
+        if response == None:
+            return render_template("search.html", response=None)
+        else:
+            return render_template("search.html", response=response)
+    
+    else:
+        return error("")
