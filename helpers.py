@@ -24,12 +24,14 @@ def lookup(search_term, query_type):
     response = []
     for book in data["items"]:
         item = book["volumeInfo"]
+        #TODO: figure out why description, avgRating, and pageCount weren't working
         dict = {
             "title": item["title"],
             "authors": item["authors"],
             "publisher": item["publisher"],
             "date": item["publishedDate"],
-            "img_link": (item["imageLinks"])["smallThumbnail"],
+            "img_link_small": (item["imageLinks"])["smallThumbnail"],
+            "img_link_large": (item["imageLinks"])["thumbnail"],
             "isbn_13": ((item["industryIdentifiers"])[0])["identifier"],
             "isbn_10": ((item["industryIdentifiers"])[1])["identifier"]
         }

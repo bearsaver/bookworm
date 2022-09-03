@@ -102,7 +102,7 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/search")
+@app.route("/search", methods=["GET", "POST"])
 def search():
     
     # intitle: Returns results where the text following this keyword is found in the title.
@@ -110,4 +110,7 @@ def search():
     # isbn: Returns results where the text following this keyword is the ISBN number.
     # inpublisher: Returns results where the text following this keyword is found in the publisher.
 
-    return error("TODO")
+    search_types = ["title", "author", "isbn"]
+    
+
+    return render_template("search.html", types=search_types)

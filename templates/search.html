@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block content %}
+<form action="/search" method="POST">
+    <input name="search" placeholder="query" type="text">
+    <select name="type">
+        <option disabled selected>type</option>
+        {% for item in list %}
+        <option value={{ item }}>{{ item }}</option>
+        {% endfor %} 
+    </select>
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+{% if request.method == "POST"%}
+<table>
+    {% for book in response %}
+        <tr>
+            <th><img alt={{ book["title"] }} src={{ book["img_link_small"] }}></th>
+            <th>{{ book["title"] }}</th>
+            <th>{{ book["authors"] }}</th>
+            <th>{{ book["publisher"] }}</th>
+            <th><button><a href="/details?q={{ book["title"] }}+intitle">more details</a></button></th>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}
