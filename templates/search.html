@@ -5,10 +5,20 @@
 {% endblock %}
 
 {% block content %}
-<form action="/search" method="POST">
-        <div class="m-3 text-center">
-            <input autocomplete="off" name="search" class="align-middle form mx-2 search" placeholder="ISBN" required type="number">
-            <button class="btn btn-primary mx-2" type="submit">Search</button>
+<form action="/search" class="align-items-center" method="POST">
+        <div class="col-auto">
+            <input autocomplete="off" name="search" class="align-middle form form-control" placeholder="search" required type="text">
+        </div>
+        <div class="col-auto">
+            <select class="align-middle form form-control form-select" name="type">
+                <option disabled selected>type</option>
+                {% for type in types %}
+                <option value={{ type }}>{{ type }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" type="submit">Search</button>
         </div>
 </form>
 

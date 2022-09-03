@@ -8,13 +8,20 @@ def error(message):
     # memegen.link
     return render_template("error.html", link=(f"https://api.memegen.link/images/sadfrog/Error/{message}.png?width=600&height=600"))
 
-def lookup(search_term):
+def lookup(search_term, type, types):
+
     # validate input
     if search_term == None:
         return error("invalid search")
+    if type not in types:
+        return error("invalid type")
+
+    for type in types:
+        if type != "isbn":
+            type = f"in{type}"
 
     # make request and ensure it returned properly
-    data = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={search_term}+isbn")
+    data = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={search_term}+{type}")
     if data.status_code != 200:
         return None
 
@@ -54,14 +61,17 @@ def lookup(search_term):
                 None
             
         # parse author data
-        if dict["authors"] != None:
-            str = ""
-            counter = 0
-            for author in dict["authors"]:
-                str += author
-                if counter != (len(dict["authors"]) - 1):
-                    str += ", "
-            dict["authors"] = str
+        try:
+            if dict["authors"] != None:
+                str = ""
+                counter = 0
+                for author in dict["authors"]:
+                    str += author
+                    if counter != (len(dict["authors"]) - 1):
+                        str += ", "
+                dict["authors"] = str
+        except (KeyError, ValueError):
+            None
 
         response.append(dict)
         
