@@ -166,3 +166,13 @@ def details():
     
     else:
         return error("error")
+
+@app.route("/add", methods=["GEt", "POST"])
+def add():
+    if request.method == "GET":
+        isbn = request.args.get("isbn")
+        return render_template("add.html")
+    elif request.method == "POSt":
+        error("todo")
+    else:
+        error("")
