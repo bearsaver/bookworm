@@ -18,6 +18,9 @@ Session(app)
 # make sure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
+# create global list of types
+types = ["title", "author", "isbn"]
+
 # ensure responses aren't cached
 @app.after_request
 def after_request(response):
@@ -110,7 +113,6 @@ def search():
     # isbn: Returns results where the text following this keyword is the ISBN number.
     # inpublisher: Returns results where the text following this keyword is found in the publisher.
 
-    types = ["title", "author", "isbn"]
 
     # make sure user is logged in
     if session.get("user_id") == None:
@@ -141,3 +143,26 @@ def search():
     
     else:
         return error("")
+
+@app.route("/details", methods=["POST"])
+def details():
+    # make sure user is logged in
+    if session.get("user_id") == None:
+        return redirect("/login")
+
+    if request.method == "POST":
+        isbn = request.form.get("isbn")
+
+        if isbn == None:
+            return error("invalid key")
+
+        # make API call
+        response = lookup(isbn, "isbn", types)
+
+        if response == None:
+            return render_template("book_details.html", book=None)
+        else:
+            return render_template("book_details.html", book=response[0])
+    
+    else:
+        return error("error")

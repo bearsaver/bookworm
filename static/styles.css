@@ -14,6 +14,7 @@
 
 .center {
     text-align: center;
+    margin: auto;
 }
 
 .search_img {
@@ -24,4 +25,18 @@
 
 td {
     vertical-align: middle;
+}
+
+.search {
+    width: 50%;
+    margin: auto;
+}
+
+.details {
+    width: 50%;
+    display: inline-block;
+}
+
+.right {
+    float: right;
 }
