@@ -5,5 +5,7 @@
 {% endblock %}
 
 {% block content %}
-
+    {% for shelf in shelves %}
+    <a href="/shelf?shelf_id={{ shelf["id"] }}">{{ shelf["name"] }}</a>
+    {% endfor %}
 {% endblock %}

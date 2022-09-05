@@ -93,6 +93,13 @@ def register():
         # add to database
         db.execute("INSERT INTO users (username, password) VALUES (?, ?)", username, generate_password_hash(password))
 
+        # create default shelves
+        default_shelves = ["to read", "reading", "read"]
+        id = db.execute("SELECT id FROM users WHERE username = ?", username)["id"]
+
+        for shelf_name in default_shelves:
+            db.execute("INSERT INTO shelves (user_id, name) VALUES (?, ?)", id, shelf_name)
+
         return redirect("/")
 
     else:
@@ -118,13 +125,31 @@ def books():
 
     # ensure GET is being used
     if request.method == "GET":
-        if request.args.get("shelf") == None:
-            return render_template("shelves.html", shelves=shelves)
+        if request.args.get("shelf_id") == None:
+            return render_template("shelves.html", shelves=shelves, shelf=None)
         else:
-            return error("")
+            id = request.args.get("shelf_id")
+            shelf = db.execute("SELECT name FROM shelves WHERE id = ?", id)
+            return render_template("shelf.html", shelf="")
     
     else:
         return error("invalid request")
+
+@app.route("/shelf")
+def shelf():
+
+    # ensure user is logged in
+    if session.get("user_id") == None:
+        return redirect("/login")
+
+    shelf_id = request.args.get("shelf_id")
+    id = session["user_id"]
+
+    # get books from shelf
+    books_isbns = db.execute("SELECT ISBN FROM books WHERE shelf_id = ?", shelf_id)
+
+    return error("todo") 
+
 
 
 @app.route("/search", methods=["GET", "POST"])
