@@ -100,9 +100,31 @@ def register():
 
 @app.route("/")
 def home():
+    # if user isn't logged in, redirect to login
     if session.get("user_id") == None:
         return redirect("/login")
     return render_template("index.html")
+
+@app.route("/books")
+def books():
+    
+    # ensure user is logged in 
+    if session.get("user_id") == None:
+        return redirect("/login")
+
+    # get user info
+    id = session["user_id"]
+    shelves = db.execute("SELECT id, name FROM shelves WHERE user_id = ?", id) 
+
+    # ensure GET is being used
+    if request.method == "GET":
+        if request.args.get("shelf") == None:
+            return render_template("shelves.html", shelves=shelves)
+        else:
+            return error("")
+    
+    else:
+        return error("invalid request")
 
 
 @app.route("/search", methods=["GET", "POST"])
