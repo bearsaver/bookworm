@@ -39,12 +39,12 @@ def lookup(search_term, type, types):
     for book in data["items"]:
         item = book["volumeInfo"]
         id = book["id"]
-        isbns = item["industryIdentifiers"]
         
         dict = {}
 
         # add isbn to dictionary
         try:
+            isbns = item["industryIdentifiers"]
             dict["isbn"] = isbns[0]["identifier"]
         except (KeyError, ValueError):
             None
@@ -76,4 +76,3 @@ def lookup(search_term, type, types):
         response.append(dict)
         
     return response
-
