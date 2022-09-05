@@ -191,14 +191,14 @@ def search():
     else:
         return error("")
 
-@app.route("/details", methods=["POST"])
+@app.route("/details", methods=["GET"])
 def details():
     # make sure user is logged in
     if session.get("user_id") == None:
         return redirect("/login")
 
-    if request.method == "POST":
-        isbn = request.form.get("isbn")
+    if request.method == "GET":
+        isbn = request.args.get("isbn")
 
         if isbn == None:
             return error("invalid key")
