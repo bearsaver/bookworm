@@ -5,18 +5,24 @@
 {% endblock %}
 
 {% block content %}
-<p>Add {{ book["title"] }} to </p>
+<h4><em>{{ book["title"] }}</em> to </h4>
 <form action="/add" method="POST">
     <input name="isbn" type="hidden" value={{ book["isbn"] }}>
-    <select name="shelf">
-        <option disabled selected>shelf</option>
-        {% for shelf in shelves %}
-        <option>{{ shelf }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit">Add</button>
+    <div class="mb-3">
+        <select name="shelf">
+            <option disabled selected>shelf</option>
+            {% for shelf in shelves %}
+            <option>{{ shelf }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <button class="btn btn-primary" type="submit">Add</button>
+    </div>
 </form>
 <form action="/">
-    <button type="submit">Cancel</button>
+    <div class="mb-3">
+        <button class="btn btn-outline-dark" type="submit">Cancel</button>
+    </div>
 </form>
 {% endblock %}
