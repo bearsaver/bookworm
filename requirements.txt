@@ -1,0 +1,6 @@
+flask
+flask-session
+tempfile
+werkzeug
+cs50
+requests
