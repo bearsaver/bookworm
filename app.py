@@ -169,10 +169,24 @@ def details():
 
 @app.route("/add", methods=["GEt", "POST"])
 def add():
+
+    # make sure user is logged in
+    if session.get("user_id") == None:
+        return redirect("/login")
+
+    # get user info
+    id = session["user_id"]
+    shelves = db.execute("SELECT name FROM shelves WHERE user_id = ?", id)
+
+    # if page is loaded standardly:
     if request.method == "GET":
         isbn = request.args.get("isbn")
-        return render_template("add.html")
-    elif request.method == "POSt":
+        book = lookup(isbn, "isbn", types)[0]
+
+        return render_template("add.html", book=book, shelves=shelves)
+
+    # if request to add is submitted:
+    elif request.method == "POST":
         error("todo")
     else:
         error("")
