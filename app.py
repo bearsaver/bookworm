@@ -200,16 +200,23 @@ def details():
     if request.method == "GET":
         isbn = request.args.get("isbn")
 
+        # validate URL
         if isbn == None:
             return error("invalid key")
 
         # make API call
         response = lookup(isbn, "isbn", types)
 
-        if response == None:
-            return render_template("book_details.html", book=None)
-        else:
-            return render_template("book_details.html", book=response[0])
+        # find correct book in response
+        index = 0
+        book = None
+        for item in response:
+            if item["isbn"] == isbn:
+                book = response[index]
+                break
+            index += 1
+        
+        return render_template("book_details.html", book=book)
     
     else:
         return error("error")
