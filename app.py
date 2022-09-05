@@ -230,7 +230,7 @@ def add():
 
     # get user info
     id = session["user_id"]
-    shelves = db.execute("SELECT name FROM shelves WHERE user_id = ?", id)
+    shelves = db.execute("SELECT * FROM shelves WHERE user_id = ?", id)
 
     # if page is loaded standardly:
     if request.method == "GET":
@@ -241,6 +241,13 @@ def add():
 
     # if request to add is submitted:
     elif request.method == "POST":
-        error("todo")
+        shelf_id = request.form.get("shelf")
+        isbn = request.form.get("isbn")
+
+        # insert into database
+        db.execute("INSERT INTO books (shelf_id, ISBN) VALUES (?, ?)", shelf_id, isbn)
+
+        return redirect("/")
+        
     else:
-        error("")
+        return error("")

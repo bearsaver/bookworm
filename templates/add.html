@@ -12,7 +12,7 @@
         <select name="shelf">
             <option disabled selected>shelf</option>
             {% for shelf in shelves %}
-            <option>{{ shelf }}</option>
+            <option value={{ shelf["id"] }}>{{ shelf["name"] }}</option>
             {% endfor %}
         </select>
     </div>
