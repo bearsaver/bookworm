@@ -148,6 +148,14 @@ def shelf():
     # get books from shelf
     books_isbns = db.execute("SELECT ISBN FROM books WHERE shelf_id = ?", shelf_id)
 
+    # add book details to list
+    books = []
+    for isbn in books_isbns:
+        response = lookup(isbn, "isbn", types)
+        book = find_correct_book(response, isbn)
+        if book != None:
+            books.append(book)
+
     return error("todo") 
 
 
@@ -215,7 +223,7 @@ def details():
     else:
         return error("error")
 
-@app.route("/add", methods=["GEt", "POST"])
+@app.route("/add", methods=["GET", "POST"])
 def add():
 
     # make sure user is logged in
