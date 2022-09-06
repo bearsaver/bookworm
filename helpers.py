@@ -87,17 +87,21 @@ def lookup(search_term, type, types):
         
     return response
 
-def find_correct_book(response, intended_isbn):
-    index = 0
+def lookup_specific(isbn):
+    
+    # look up isbn
+    response = lookup(isbn, "isbn", ["isbn"])
+    
     book = None
-        
+
     # parse response 
     for item in response:
-        if item["isbn"] == intended_isbn:
-            book = response[index]
-            break
-        
-        index += 1
+        try:
+            if item["isbn"] == isbn:
+                book = item
+                break
+        except (KeyError, ValueError):
+            None
     
     # return correct book
     return book

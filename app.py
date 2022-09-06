@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import error, lookup, find_correct_book
+from helpers import error, lookup, lookup_specific
 import cs50
 
 # initiate flask app
@@ -148,15 +148,17 @@ def shelf():
     # get books from shelf
     books_isbns = db.execute("SELECT ISBN FROM books WHERE shelf_id = ?", shelf_id)
 
+    print(books_isbns)
+
     # add book details to list
     books = []
     for isbn in books_isbns:
-        response = lookup(isbn, "isbn", types)
-        book = find_correct_book(response, isbn)
+        book = lookup_specific(isbn)
         if book != None:
             books.append(book)
+            print(book)
 
-    return error("todo") 
+    return render_template("shelf.html", books=books) 
 
 
 
@@ -212,11 +214,8 @@ def details():
         if isbn == None:
             return error("invalid key")
 
-        # make API call
-        response = lookup(isbn, "isbn", types)
-
-        # find correct book in response
-        book = find_correct_book(response, isbn)
+        # find correct book
+        book = lookup_specific(isbn)
         
         return render_template("book_details.html", book=book)
     
@@ -239,8 +238,7 @@ def add():
         isbn = request.args.get("isbn")
 
         # find book
-        response = lookup(isbn, "isbn", types)
-        book = find_correct_book(response, isbn)
+        book = lookup_specific(isbn)
 
         return render_template("add.html", book=book, shelves=shelves)
 
