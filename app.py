@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import error, lookup
+from helpers import error, lookup, find_correct_book
 import cs50
 
 # initiate flask app
@@ -208,13 +208,7 @@ def details():
         response = lookup(isbn, "isbn", types)
 
         # find correct book in response
-        index = 0
-        book = None
-        for item in response:
-            if item["isbn"] == isbn:
-                book = response[index]
-                break
-            index += 1
+        book = find_correct_book(response, isbn)
         
         return render_template("book_details.html", book=book)
     
@@ -235,7 +229,10 @@ def add():
     # if page is loaded standardly:
     if request.method == "GET":
         isbn = request.args.get("isbn")
-        book = lookup(isbn, "isbn", types)[0]
+
+        # find book
+        response = lookup(isbn, "isbn", types)
+        book = find_correct_book(response, isbn)
 
         return render_template("add.html", book=book, shelves=shelves)
 
@@ -248,6 +245,6 @@ def add():
         db.execute("INSERT INTO books (shelf_id, ISBN) VALUES (?, ?)", shelf_id, isbn)
 
         return redirect("/")
-        
+
     else:
         return error("")

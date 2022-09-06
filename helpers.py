@@ -45,7 +45,17 @@ def lookup(search_term, type, types):
         # add isbn to dictionary
         try:
             isbns = item["industryIdentifiers"]
-            dict["isbn"] = isbns[0]["identifier"]
+            for isbn in isbns:
+                if isbn["type"] == "ISBN_13":
+                    dict["isbn"] = isbn["identifier"]
+        except (KeyError, ValueError):
+            None
+
+        try:
+            isbns = item["industryIdentifiers"]
+            for isbn in isbns:
+                if isbn["type"] == "ISBN_10":
+                    dict["isbn_10"] = isbn["identifier"]
         except (KeyError, ValueError):
             None
         
@@ -76,3 +86,18 @@ def lookup(search_term, type, types):
         response.append(dict)
         
     return response
+
+def find_correct_book(response, intended_isbn):
+    index = 0
+    book = None
+        
+    # parse response 
+    for item in response:
+        if item["isbn"] == intended_isbn:
+            book = response[index]
+            break
+        
+        index += 1
+    
+    # return correct book
+    return book
