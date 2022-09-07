@@ -148,15 +148,12 @@ def shelf():
     # get books from shelf
     books_isbns = db.execute("SELECT ISBN FROM books WHERE shelf_id = ?", shelf_id)
 
-    print(books_isbns)
-
     # add book details to list
     books = []
     for isbn in books_isbns:
-        book = lookup_specific(isbn)
+        book = lookup_specific(isbn["ISBN"], types)
         if book != None:
             books.append(book)
-            print(book)
 
     return render_template("shelf.html", books=books) 
 
@@ -215,7 +212,7 @@ def details():
             return error("invalid key")
 
         # find correct book
-        book = lookup_specific(isbn)
+        book = lookup_specific(isbn, types)
         
         return render_template("book_details.html", book=book)
     
@@ -238,7 +235,7 @@ def add():
         isbn = request.args.get("isbn")
 
         # find book
-        book = lookup_specific(isbn)
+        book = lookup_specific(isbn, types)
 
         return render_template("add.html", book=book, shelves=shelves)
 

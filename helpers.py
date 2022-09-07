@@ -87,21 +87,21 @@ def lookup(search_term, type, types):
         
     return response
 
-def lookup_specific(isbn):
+def lookup_specific(isbn, types):
     
     # look up isbn
-    response = lookup(isbn, "isbn", ["isbn"])
+    response = lookup(isbn, "isbn", types)
     
     book = None
 
     # parse response 
     for item in response:
         try:
-            if item["isbn"] == isbn:
-                book = item
-                break
+            # casting to int so it actually registers it!!!
+            if int(item["isbn"]) == int(isbn):
+                return item
         except (KeyError, ValueError):
             None
     
-    # return correct book
-    return book
+    # if nothing is found, return none
+    return None
