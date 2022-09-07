@@ -5,7 +5,15 @@
 {% endblock %}
 
 {% block content %}
+    <div class="mx-4 my-3">
+        <h4>Shelves:</h4>
+    </div>
     {% for shelf in shelves %}
-    <a href="/shelf?shelf_id={{ shelf["id"] }}">{{ shelf["name"] }}</a>
+    <div class="mx-4 mt-3">
+        <form action="/shelf" method="GET">
+            <input name="shelf_id" type="hidden" value={{ shelf["id"] }}>
+            <button class="btn btn-outline-dark" type="submit">{{ shelf["name"] }}</button>
+        </form>
+    </div>
     {% endfor %}
 {% endblock %}
