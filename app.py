@@ -95,7 +95,7 @@ def register():
 
         # create default shelves
         default_shelves = ["to read", "reading", "read"]
-        id = db.execute("SELECT id FROM users WHERE username = ?", username)["id"]
+        id = db.execute("SELECT id FROM users WHERE username = ?", username)[0]["id"]
 
         for shelf_name in default_shelves:
             db.execute("INSERT INTO shelves (user_id, name) VALUES (?, ?)", id, shelf_name)
