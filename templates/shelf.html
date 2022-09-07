@@ -1,3 +1,43 @@
 {% extends "layout.html" %}
 
-<!-- TO BE USED FOR INDIVIDUAL BOOKSHELVES!  -->
+{% block title %}
+    Bookshelf
+{% endblock %}
+
+{% block content %}
+    <table class="table table-borderless">
+        <tr>
+            <th class="first_col">cover</th>
+            <th>title</th>
+            <th>author</th>
+            <th>publisher</th>
+            <th></th>
+        </tr>
+    {% if books != None %}
+        {% for book in books %}
+            <tr>
+                <td class="first_col"><img alt="{{ book["title"] }}" class="search_img" src="{{ book["img_small"] }}"></td>
+                <td>{{ book["title"] }}</td>
+                <td>{{ book["authors"] }}</td>
+                <td>{{ book["publisher"] }}</td>
+                <td>
+                    <form action="/remove" method="POST">
+                        <input name="shelf_id" type="hidden" value="{{ shelf_id }}">
+                        <input name="isbn" type="hidden" value={{ book["isbn"] }}>
+                        <button class ="btn btn-primary" type="submit">remove from shelf</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/details" method="GET">
+                        <input name="isbn" type="hidden" value={{ book["isbn"] }}>
+                        <button class ="btn btn-primary" type="submit">more details</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <p>Shelf is empty.</p>
+    {% endif %}
+
+    </table>
+{% endblock %}
