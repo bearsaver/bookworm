@@ -155,9 +155,7 @@ def shelf():
         if book != None:
             books.append(book)
 
-    return render_template("shelf.html", books=books) 
-
-
+    return render_template("shelf.html", books=books, shelf_id=shelf_id) 
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
@@ -251,3 +249,13 @@ def add():
 
     else:
         return error("")
+
+@app.route("/remove", methods=["POST"])
+def remove():
+    isbn = request.form.get("isbn")
+    shelf_id = request.form.get("shelf_id")
+
+    # remove from database
+    db.execute("DELETE FROM books WHERE isbn = ? AND shelf_id = ?", isbn, shelf_id)
+
+    return redirect(f"/shelf?shelf_id={shelf_id}")
