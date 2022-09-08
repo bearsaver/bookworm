@@ -33,8 +33,6 @@ def after_request(response):
 # initiate sql database
 db = cs50.SQL("sqlite:///bookworm.db")
 
-
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
@@ -110,7 +108,25 @@ def home():
     # if user isn't logged in, redirect to login
     if session.get("user_id") == None:
         return redirect("/login")
-    return render_template("index.html")
+
+    user_id = session["user_id"] 
+
+    # find books in "reading" shelf 
+    shelf_name = "reading"
+    current_shelf = db.execute("SELECT id FROM shelves WHERE name == ? AND user_id = ?", shelf_name, user_id)[0]["id"]
+
+    current_books = None
+    if current_shelf != None:
+        current_books = db.execute("SELECT * FROM books WHERE shelf_id = ?", current_shelf)
+
+        # lookup books and add details to list
+        books = None
+        for item in current_books:
+            book = lookup_specific(item["ISBN"], types)
+            if book != None:
+                books.append(book)
+
+    return render_template("index.html", books=books)
 
 @app.route("/books")
 def books():

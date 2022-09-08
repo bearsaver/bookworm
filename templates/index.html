@@ -5,5 +5,13 @@
 {% endblock %}
 
 {% block content %}
-    <p>hi!!!!</p>
+    <div>
+        {% if books != None %}
+            {% for book in books %}
+            <h1>{{ book["title"] }}</h1>
+            {% endfor %}
+        {% else %}
+            <h1>No books are currently being read</h1>
+        {% endif %}
+    </div>
 {% endblock %}
