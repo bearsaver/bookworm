@@ -119,7 +119,7 @@ def home():
     if current_shelf != None:
         current_books = db.execute("SELECT * FROM books WHERE shelf_id = ?", current_shelf)
 
-        if current_books != None:
+        if current_books != []:
 
             # lookup books and add details to list
             books = []
@@ -129,10 +129,10 @@ def home():
                     books.append(book)
 
             return render_template("index.html", books=books)
-        
-        else:
-            return render_template("index.html", books=None)
-        
+
+        else: 
+            return render_template("index.html", books=[])
+                
     else: 
         return error("databse error")
 
