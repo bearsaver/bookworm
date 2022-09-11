@@ -197,8 +197,6 @@ def books():
         if book != None:
             books.append(book)
 
-    print(books)
-
     return render_template("books.html", books=books)
 
 @app.route("/search", methods=["GET", "POST"])
