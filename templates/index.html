@@ -5,10 +5,17 @@
 {% endblock %}
 
 {% block content %}
-    <div>
+    <h2 class="m-3">Welcome to Bookworm!</h2>
+    <div class="mx-3 mb-5">
         {% if books != None %}
+            <div>
+                <h4 class="mb-3">Currently reading:</h4>
+            </div>
             {% for book in books %}
-            <h1>{{ book["title"] }}</h1>
+                <span class="inline mx-3">
+                    <img src="{{ book["img_small"] }}">
+                    <p class="mt-2">{{ book["title"] }}</p>
+                </span>
             {% endfor %}
         {% else %}
             <h1>No books are currently being read</h1>
