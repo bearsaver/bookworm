@@ -120,7 +120,7 @@ def home():
         current_books = db.execute("SELECT * FROM books WHERE shelf_id = ?", current_shelf)
 
         # lookup books and add details to list
-        books = None
+        books = []
         for item in current_books:
             book = lookup_specific(item["ISBN"], types)
             if book != None:
@@ -129,7 +129,7 @@ def home():
     return render_template("index.html", books=books)
 
 @app.route("/shelves")
-def books():
+def shelves():
     
     # ensure user is logged in 
     if session.get("user_id") == None:
@@ -172,6 +172,34 @@ def shelf():
             books.append(book)
 
     return render_template("shelf.html", books=books, shelf_id=shelf_id) 
+
+@app.route("/books")
+def books():
+
+    # ensure user is logged in
+    if session.get("user_id") == None:
+        return redirect("/login")
+
+    id = session["user_id"]
+
+    # get all of user's books isbns
+    shelves = db.execute("SELECT id FROM shelves WHERE user_id = ?", id)
+    book_isbns = []
+    for shelf in shelves:
+        isbns = db.execute("SELECT ISBN FROM books WHERE shelf_id = ?", shelf["id"])
+        for isbn in isbns:
+            book_isbns.append(isbn["ISBN"])
+    books = []
+
+    # get book info for all books
+    for isbn in book_isbns:
+        book = lookup_specific(isbn, types)
+        if book != None:
+            books.append(book)
+
+    print(books)
+
+    return render_template("books.html", books=books)
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
