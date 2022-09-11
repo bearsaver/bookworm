@@ -3,3 +3,11 @@
 {% block title %}
     Books
 {% endblock %}
+
+{% block content %}
+    {% for book in books %}
+        <a href="/details?isbn={{ book["isbn"] }}">
+            <img src="{{ book["img_small"] }}">
+        </a>
+    {% endfor %}
+{% endblock %}
