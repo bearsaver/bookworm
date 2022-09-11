@@ -128,7 +128,7 @@ def home():
 
     return render_template("index.html", books=books)
 
-@app.route("/books")
+@app.route("/shelves")
 def books():
     
     # ensure user is logged in 
