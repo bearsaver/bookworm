@@ -5,9 +5,13 @@
 {% endblock %}
 
 {% block content %}
-    {% for book in books %}
-        <a href="/details?isbn={{ book["isbn"] }}">
-            <img src="{{ book["img_small"] }}">
-        </a>
-    {% endfor %}
+    <div class="mt-3 mb-5">
+        {% for book in books %}
+            <span class="m-3">
+                <a href="/details?isbn={{ book["isbn"] }}">
+                    <img src="{{ book["img_small"] }}">
+                </a>
+            </span>    
+        {% endfor %}
+    </div>
 {% endblock %}
