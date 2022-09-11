@@ -7,7 +7,7 @@
 {% block content %}
     <h2 class="m-3">Welcome to Bookworm!</h2>
     <div class="mx-3 mb-5">
-        {% if books != None %}
+        {% if books != [] %}
             <div>
                 <h4 class="mb-3">Currently reading:</h4>
             </div>
@@ -18,7 +18,7 @@
                 </span>
             {% endfor %}
         {% else %}
-            <h4>No books are currently being read</h4>
+            <h5>No books are currently being read</h5>
         {% endif %}
     </div>
 {% endblock %}
