@@ -181,6 +181,33 @@ def shelf():
 
     return render_template("shelf.html", books=books, shelf_id=shelf_id) 
 
+@app.route("/add_shelf", methods=["GET", "POST"])
+def add_shelf():
+
+    # ensure user is logged in
+    if session.get("user_id") == None:
+        return redirect("/login")
+
+    # if user loads page normally, render page
+    if request.method == "GET":
+        return render_template("add_shelf.html")
+
+    # if user submits form, add new shelf to database
+    elif request.method == "POST":
+        shelf_name = request.form.get("shelf_name")
+        user_id = session["user_id"]
+
+        # validate user input
+        if shelf_name == None:
+            return error("invalid shelf name")
+
+        db.execute("INSERT INTO shelves (name, user_id) VALUES (?, ?)", shelf_name, user_id)
+
+        return redirect("/shelves")
+
+    else:
+        return error("error")
+
 @app.route("/books")
 def books():
 
