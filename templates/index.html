@@ -13,8 +13,9 @@
             </div>
             {% for book in books %}
                 <span class="inline mx-3">
-                    <img src="{{ book["img_small"] }}">
-                    <p class="mt-2">{{ book["title"] }}</p>
+                    <a href="/details?isbn={{ book["isbn"] }}">
+                        <img src="{{ book["img_small"] }}">
+                    </a>
                 </span>
             {% endfor %}
         {% else %}
