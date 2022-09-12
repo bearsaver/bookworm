@@ -1,5 +1,5 @@
 # Bookworm
-#### Video Demo: 
+#### Video Demo: https://youtu.be/G0kUaABFpTA
 #### Description:
 
 Bookworm is a web app that mimics Goodreads' ability to search books and store them on shelves. Its goal is to be a minimalist alternative that can still effectively track the user's books.
