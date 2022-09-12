@@ -51,12 +51,10 @@ def login():
         if username_in_db == []:
             return error("username not found")
         
-        password_hash = generate_password_hash(password)
-
         user_info = username_in_db[0]
 
         # check password
-        if password_hash == user_info["password"]:
+        if check_password_hash(user_info["password"], password) == True:
             user_id = user_info["id"]
             session["user_id"] = user_id
 
@@ -67,6 +65,7 @@ def login():
 
     else:
         return error("")
+
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
