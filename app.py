@@ -42,20 +42,29 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        print(f"username: {username} password: {password}")
-
-        username_db = db.execute("SELECT * FROM users WHERE username = ?", username)
-
-        #validate user input
+        # validate user input
         if username == None or password == None:
             return error("required fields not filled")
-        if username_db == []:
+
+        username_in_db = db.execute("SELECT * FROM users WHERE username = ?", username)
+
+        if username_in_db == []:
             return error("username not found")
         
-        user_id = db.execute("SELECT id FROM users WHERE username = ?", username)[0]["id"]
-        session["user_id"] = user_id
+        password_hash = generate_password_hash(password)
 
-        return redirect("/")
+        user_info = username_in_db[0]
+
+        # check password
+        if password_hash == user_info["password"]:
+            user_id = user_info["id"]
+            session["user_id"] = user_id
+
+            return redirect("/")
+
+        else:
+            return error("incorrect password")
+
     else:
         return error("")
 
