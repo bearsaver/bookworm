@@ -12,8 +12,13 @@
     <div class="mx-4 mt-3">
         <form action="/shelf" method="GET">
             <input name="shelf_id" type="hidden" value={{ shelf["id"] }}>
-            <button class="btn btn-outline-dark" type="submit">{{ shelf["name"] }}</button>
+            <button class="btn btn-outline-dark btn-light" type="submit">{{ shelf["name"] }}</button>
         </form>
     </div>
     {% endfor %}
+    <div class="mx-4 mt-5">
+        <form action="/add_shelf" method="GET">
+            <button class="btn btn-outline-dark btn-sm" type="submit">Add shelf</button>
+        </form>
+    </div>
 {% endblock %}
